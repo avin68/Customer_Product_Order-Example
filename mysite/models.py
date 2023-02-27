@@ -49,7 +49,8 @@ class OrderProduct(models.Model):
     tedaad = models.IntegerField(verbose_name='تعداد')
     price = models.IntegerField(verbose_name='قیمت')
     price_all = models.IntegerField(verbose_name='قیمت کل')
-    date_sabt = models.DateTimeField(auto_now=True)
+    date_sabt = models.DateTimeField(auto_now_add=True, verbose_name='تاریخ ایجاد')
+    date_update = models.DateTimeField(auto_now=True, verbose_name='تاریخ بروزرسانی')
 
     class Meta:
         verbose_name = 'سفارش'
@@ -59,5 +60,20 @@ class OrderProduct(models.Model):
     def __str__(self):
         return self.customer.customer_name+' '+self.customer.customer_family+'---'+self.product.product_name
 
+    def get_jalali_date_sabt(self):
+        return date2jalali(self.date_sabt)
 
+    def get_jalali_date_update(self):
+        return date2jalali(self.date_update)
+
+    def get_time_create_at(self):
+        return self.date_sabt.strftime('%H:%M:%S')
+
+    def get_time_update(self):
+        return self.date_update.strftime('%H:%M:%S')
+
+    get_jalali_date_sabt.short_description = 'تاریخ ایجاد'
+    get_jalali_date_update.short_description = 'تاریخ بروزرسانی'
+    get_time_create_at.short_description = 'زمان ایجاد'
+    get_time_update.short_description = 'زمان آپدیت'
 
